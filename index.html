@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PREDEV — Predevelopment Check für Immobilienprojekte</title>
+<meta name="description" content="Wirtschaftlichkeitsprüfung für Bauträger und Investoren. Methodik nach ÖNORM B 1802-2, KPI-Matrix, IRR/Cashflow-Rechner und kuratierte Quellen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0F1419;
+    --ink-2: #2A2D33;
+    --paper: #F4EFE6;
+    --paper-2: #E8DDC8;
+    --rule: #C9BFA8;
+    --accent: #8B2331;
+    --accent-2: #6B1A26;
+    --good: #4A7C59;
+    --warn: #B8860B;
+    --max: 1280px;
+    --col: 720px;
+    --serif: "Fraunces", "Playfair Display", Georgia, serif;
+    --sans: "Inter", -apple-system, system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; transition: color 0.15s; }
+  a:hover { color: var(--accent-2); }
+
+  /* ───────── HEADER ───────── */
+  .top {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(244, 239, 230, 0.92);
+    backdrop-filter: saturate(140%) blur(8px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .top-inner {
+    max-width: var(--max); margin: 0 auto;
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 14px 32px;
+  }
+  .wordmark {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 0.25em;
+    color: var(--ink);
+    border: none;
+  }
+  .wordmark::after {
+    content: "·";
+    color: var(--accent);
+    margin: 0 0.4em;
+  }
+  .top nav {
+    display: flex; gap: 28px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+  }
+  .top nav a { color: var(--ink-2); border: none; }
+  .top nav a:hover { color: var(--accent); }
+
+  /* ───────── HERO ───────── */
+  .hero {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 120px 32px 80px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 32px;
+    display: flex; gap: 14px; align-items: center;
+  }
+  .hero .eyebrow::before { content: ""; display: inline-block; width: 32px; height: 1px; background: var(--accent); }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 0.98;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    max-width: 14ch;
+    margin-bottom: 32px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .hero .lede {
+    font-family: var(--serif);
+    font-size: clamp(20px, 2.4vw, 26px);
+    line-height: 1.4;
+    max-width: 36ch;
+    color: var(--ink-2);
+    font-weight: 400;
+  }
+  .hero .meta {
+    margin-top: 56px;
+    display: flex; gap: 48px; flex-wrap: wrap;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-2);
+    border-top: 1px solid var(--rule);
+    padding-top: 24px;
+  }
+  .hero .meta div span { display: block; font-family: var(--mono); font-size: 11px; opacity: 0.6; margin-bottom: 4px; }
+
+  /* ───────── SECTIONS ───────── */
+  section {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 96px 32px;
+    border-bottom: 1px solid var(--rule);
+  }
+  section h2 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+    max-width: 18ch;
+  }
+  section h2 .num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    display: block;
+    margin-bottom: 16px;
+  }
+  section .intro {
+    max-width: var(--col);
+    font-size: 19px;
+    line-height: 1.7;
+    color: var(--ink-2);
+    margin-bottom: 48px;
+  }
+  section .intro p + p { margin-top: 1em; }
+
+  /* ───────── 9 PHASEN ───────── */
+  .phases {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-left: 1px solid var(--rule);
+  }
+  .phase {
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 32px;
+    background: var(--paper);
+    transition: background 0.2s;
+  }
+  .phase:hover { background: var(--paper-2); }
+  .phase .num {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .phase h3 {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    line-height: 1.15;
+  }
+  .phase p { font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+  .phase ul { margin-top: 12px; padding-left: 18px; font-size: 14px; color: var(--ink-2); }
+  .phase ul li { margin-bottom: 4px; }
+
+  /* ───────── KPI TABLE ───────── */
+  .kpi-table {
+    overflow-x: auto;
+    margin-top: 24px;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  table { width: 100%; border-collapse: collapse; min-width: 720px; }
+  thead th {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-align: left;
+    padding: 16px 20px;
+    border-bottom: 2px solid var(--ink);
+    color: var(--ink);
+    background: var(--paper-2);
+  }
+  tbody td {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 14px;
+    vertical-align: top;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody td:first-child { font-weight: 600; font-family: var(--serif); font-size: 17px; }
+  tbody td code, tbody td .formula {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--paper-2);
+    padding: 3px 7px;
+    border-radius: 2px;
+    color: var(--accent-2);
+  }
+  tbody td .threshold {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--good);
+    font-weight: 500;
+  }
+
+  /* ───────── DCF EXPLAINER ───────── */
+  .dcf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 40px;
+  }
+  .dcf-phase {
+    background: var(--paper-2);
+    border-left: 3px solid var(--accent);
+    padding: 32px;
+  }
+  .dcf-phase h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  .dcf-phase h3 {
+    font-family: var(--serif);
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+  .dcf-phase p { font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+  .dcf-formula {
+    font-family: var(--mono);
+    background: var(--ink);
+    color: var(--paper);
+    padding: 16px 20px;
+    margin-top: 16px;
+    font-size: 13px;
+    overflow-x: auto;
+    border-radius: 2px;
+  }
+
+  /* ───────── RISIKO TABLE ───────── */
+  .risk-grid { margin-top: 24px; }
+
+  /* ───────── RECHNER ───────── */
+  .calc {
+    margin-top: 40px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+  .calc h3 {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    grid-column: 1 / -1;
+  }
+  .calc .calc-sub { grid-column: 1 / -1; opacity: 0.7; font-size: 14px; margin-bottom: 16px; }
+  .calc-inputs { display: flex; flex-direction: column; gap: 22px; }
+  .field label {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: rgba(244, 239, 230, 0.6);
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .field label .val {
+    font-family: var(--mono);
+    color: var(--paper);
+    font-size: 13px;
+    letter-spacing: 0;
+  }
+  .field input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none; appearance: none;
+    height: 2px;
+    background: rgba(244, 239, 230, 0.2);
+    outline: none;
+  }
+  .field input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px; height: 16px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--paper);
+  }
+  .field input[type="range"]::-moz-range-thumb {
+    width: 14px; height: 14px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--paper);
+  }
+  .calc-outputs { display: flex; flex-direction: column; gap: 4px; }
+  .out-block {
+    border-top: 1px solid rgba(244, 239, 230, 0.15);
+    padding: 14px 0;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .out-block:first-child { border-top: none; }
+  .out-block .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(244, 239, 230, 0.65);
+  }
+  .out-block .value {
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 700;
+  }
+  .out-block .value.good { color: #87C298; }
+  .out-block .value.bad { color: #E08896; }
+  .out-block .value.warn { color: #DCC275; }
+  .calc-chart {
+    grid-column: 1 / -1;
+    margin-top: 16px;
+    border-top: 1px solid rgba(244, 239, 230, 0.15);
+    padding-top: 24px;
+  }
+  .calc-chart h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(244, 239, 230, 0.65);
+    margin-bottom: 16px;
+  }
+  .chart {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    align-items: end;
+    height: 140px;
+    gap: 6px;
+  }
+  .chart .bar {
+    background: var(--accent);
+    transition: height 0.3s;
+    position: relative;
+    min-height: 2px;
+  }
+  .chart .bar.neg { background: var(--accent-2); opacity: 0.6; }
+  .chart .bar .yr {
+    position: absolute;
+    bottom: -22px;
+    left: 50%; transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(244, 239, 230, 0.5);
+  }
+
+  /* ───────── CHECKLIST ───────── */
+  .checklist {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--rule);
+  }
+  .check-group {
+    border-bottom: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+    padding: 32px;
+  }
+  .check-group:nth-child(even) { border-right: none; }
+  .check-group h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+  .check-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 8px 0;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .check-item:hover { opacity: 0.7; }
+  .check-item input { margin-top: 5px; cursor: pointer; }
+  .check-item label { flex: 1; cursor: pointer; font-size: 14.5px; line-height: 1.45; }
+  .check-item.done label { text-decoration: line-through; opacity: 0.5; }
+
+  /* ───────── RESSOURCEN ───────── */
+  .resources {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    margin-top: 40px;
+  }
+  .res-group h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .res-group ul { list-style: none; }
+  .res-group li { margin-bottom: 14px; font-size: 15px; line-height: 1.4; }
+  .res-group li strong { display: block; font-family: var(--serif); font-weight: 700; font-size: 16px; }
+  .res-group li span { display: block; font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+
+  /* ───────── FOOTER ───────── */
+  footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 80px 32px;
+  }
+  footer .foot-inner { max-width: var(--max); margin: 0 auto; }
+  footer .foot-mark {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 56px;
+    letter-spacing: 0.2em;
+    margin-bottom: 24px;
+  }
+  footer p { max-width: 60ch; opacity: 0.7; font-size: 14px; line-height: 1.6; margin-bottom: 16px; }
+  footer .foot-meta {
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(244, 239, 230, 0.15);
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.5;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  /* ───────── PULL QUOTE ───────── */
+  .pullquote {
+    font-family: var(--serif);
+    font-size: clamp(26px, 3.2vw, 38px);
+    line-height: 1.25;
+    font-weight: 400;
+    color: var(--ink);
+    max-width: 22ch;
+    margin: 56px 0;
+    padding-left: 24px;
+    border-left: 3px solid var(--accent);
+    font-style: italic;
+  }
+  .pullquote cite {
+    display: block;
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-2);
+    margin-top: 16px;
+    font-weight: 500;
+  }
+
+  @media (max-width: 768px) {
+    .hero { padding: 64px 24px 48px; }
+    section { padding: 64px 24px; }
+    .checklist { grid-template-columns: 1fr; }
+    .check-group { border-right: none; }
+    .dcf-grid { grid-template-columns: 1fr; }
+    .calc { grid-template-columns: 1fr; padding: 32px; gap: 32px; }
+    .top nav { display: none; }
+    footer { padding: 56px 24px; }
+    footer .foot-mark { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <a href="#" class="wordmark">PREDEV</a>
+    <nav>
+      <a href="#phasen">Phasen</a>
+      <a href="#kpi">KPIs</a>
+      <a href="#dcf">DCF</a>
+      <a href="#rechner">Rechner</a>
+      <a href="#checkliste">Checkliste</a>
+      <a href="#quellen">Quellen</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="eyebrow">Predevelopment Check · Wirtschaftlichkeitsprüfung</div>
+  <h1>Bevor der erste <em>Bagger</em> rollt.</h1>
+  <p class="lede">Ein strukturierter Predevelopment Check entscheidet darüber, ob ein Immobilienprojekt Geld verdient oder Geld vernichtet. Methodik, Kennzahlen und Standards für Bauträger und Investoren — nach ÖNORM B 1802-2.</p>
+  <div class="meta">
+    <div><span>Lesedauer</span> 10–12 Minuten</div>
+    <div><span>Ausgabe</span> 2026-05-06 · Wien</div>
+    <div><span>Geltungsraum</span> AT / DACH</div>
+    <div><span>Zielgruppe</span> Profi-Investoren · Bauträger</div>
+  </div>
+</div>
+
+<section id="intro">
+  <h2><span class="num">§ 01 / Einführung</span>Was ein Predevelopment Check leistet</h2>
+  <div class="intro">
+    <p>Der <strong>Predevelopment Check</strong> ist die strukturierte Wirtschaftlichkeits- und Machbarkeitsprüfung <em>vor</em> dem Grundstückskauf, vor dem Spatenstich, vor jeder unwiderruflichen Investitionsentscheidung. Er beantwortet eine einzige Frage: <em>Trägt sich dieses Projekt wirtschaftlich — unter realistischen Annahmen, mit angemessener Risikoreserve, in der zur Verfügung stehenden Zeit?</em></p>
+    <p>Sein Zweck ist nicht, jedes Projekt zu rechtfertigen, sondern unrentable Projekte früh genug zu verwerfen — bevor Planungs-, Notars-, Finanzierungs- und Opportunitätskosten unwiederbringlich gebunden sind. Eine saubere Predevelopment-Phase kostet 0,5–2 % des Projektvolumens; eine fehlende kann das gesamte Eigenkapital kosten.</p>
+    <p>Standard in Österreich ist die Bewertung nach <strong>ÖNORM B 1802-2</strong> (DCF-Verfahren) für Liegenschaften, ergänzt um <strong>ÖNORM B 1801-1</strong> (Baukostengliederung) und <strong>ÖNORM B 1801-2</strong> (Lebenszykluskosten). International ergänzt durch <a href="https://www.gif-ev.de" target="_blank" rel="noopener">gif e.V.</a>-Definitionen für Mietfläche und Renditen sowie EU-Taxonomie für ESG-Aspekte.</p>
+  </div>
+
+  <div class="pullquote">
+    „Ein gutes Investment beginnt nicht mit der Unterschrift, sondern mit der Ablehnung der zwanzig schlechten Investments davor."
+    <cite>Branchenfaustregel · Projektentwicklung</cite>
+  </div>
+</section>
+
+<section id="phasen">
+  <h2><span class="num">§ 02 / Methodik</span>Die neun Phasen</h2>
+  <div class="intro">
+    <p>Ein vollständiger Predevelopment Check umfasst neun Disziplinen. Sie laufen iterativ — eine Aktualisierung der Markt­annahmen wirkt auf Erlös­prognose, IRR und Risiko­profil. Reihenfolge ist nicht streng linear, aber die ersten drei Phasen sind <em>Knockout-Tests</em>: scheitert ein Projekt hier, ist jede weitere Analyse Verschwendung.</p>
+  </div>
+
+  <div class="phases">
+    <div class="phase">
+      <div class="num">01 · Knockout</div>
+      <h3>Standortanalyse</h3>
+      <p>Mikro- und Makrolage, Demografie, Kaufkraft, Pendlerströme, geplante Infrastruktur (ÖV, Schule, Gesundheit), Lärm- und Emissions­karten. Quelle: Statistik Austria, Stadt-/Bezirksdaten.</p>
+      <ul>
+        <li>Walk-Score, Anbindungs­minuten</li>
+        <li>Demografische Prognose 10 Jahre</li>
+        <li>Lärm- und Schadstoffkataster</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="num">02 · Knockout</div>
+      <h3>Marktanalyse</h3>
+      <p>Angebot/Nachfrage in der Asset-Klasse, Absorptions­geschwindigkeit, Leerstands­quote, Mietsteigerungs­trend, Pipeline-Konkurrenz. Daten: ImmoScout24, Willhaben, OePAG, makelnde Häuser.</p>
+      <ul>
+        <li>Vergleichbare Mieten/Verkaufspreise</li>
+        <li>Absorption (Monate bis 90 % verkauft)</li>
+        <li>Leerstand &lt; 4 % als Schwelle</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="num">03 · Knockout</div>
+      <h3>Technische Machbarkeit</h3>
+      <p>Flächen­widmung, Bebauungs­plan, Baurecht, Bestands­denkmal, Versorgungs­infrastruktur, Bodengutachten, Altlasten­verdacht, Hochwasser­zonen.</p>
+      <ul>
+        <li>Widmung passt zur Nutzung</li>
+        <li>Geotechnik / Altlasten­verdacht</li>
+        <li>Anschluss Wasser/Strom/Glasfaser</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="num">04</div>
+      <h3>Kostenkalkulation</h3>
+      <p>Grunderwerb (Kaufpreis, GrESt 3,5 %, Eintragungs­gebühr 1,1 %, Notar/Vertrag), Bau­kosten nach ÖNORM B 1801-1, Nebenkosten, Finanzierungs­kosten, Reserven (5–10 %).</p>
+      <ul>
+        <li>Erwerbsneben­kosten ~9–10 %</li>
+        <li>Baukosten­index Statistik Austria</li>
+        <li>Reserve ≥ 7 % Bau</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="num">05</div>
+      <h3>Erlösprognose</h3>
+      <p>Erzielbare Mieten/Verkaufs­preise, Vermarktungs­dauer, Rabatt­annahmen, Mietsteigerungs­szenarien (Index, Markt­miete). Saubere Trennung von <em>Soll-</em> und <em>Erwartungs­wert</em>.</p>
+      <ul>
+        <li>Achievable Rent (nicht Asking Rent)</li>
+        <li>Lease-up-Kurve in Monaten</li>
+        <li>Indexierung VPI/HVPI</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="num">06</div>
+      <h3>Wirtschaftlichkeit</h3>
+      <p>DCF nach ÖNORM B 1802-2, IRR über Halte­dauer, NPV bei WACC, Cashflow vor/nach Steuer, Trading-Profit für Bauträger­modelle.</p>
+      <ul>
+        <li>Detailprognose 10 Jahre</li>
+        <li>Restwert mit Cap Rate</li>
+        <li>IRR ≥ Mindest­verzinsung</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="num">07</div>
+      <h3>Risikoanalyse</h3>
+      <p>Sensitivitäten auf Zins, Bau­kosten, Miete, Leerstand. Worst/Base/Best-Szenarien. Stresstest auf 200 bp Zinsanstieg und 15 % Baukosten­überzug.</p>
+      <ul>
+        <li>±10 % Sensitivität auf Mieten</li>
+        <li>+200 bp Zins-Stresstest</li>
+        <li>Worst-Case ≠ rote IRR</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="num">08</div>
+      <h3>Lebenszyklus­kosten</h3>
+      <p>LCC nach ÖNORM B 1801-2: Bau, Betrieb, Erneuerung, Rückbau über 30–50 Jahre. Energie­konzept und Instandhaltungs­quote (1,2–1,8 % Wieder­beschaffungs­wert p.a.).</p>
+      <ul>
+        <li>Energieausweis, U-Werte</li>
+        <li>Instandhaltung 1,5 % p.a.</li>
+        <li>End-of-Life-Rückbau</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="num">09</div>
+      <h3>ESG & Nachhaltigkeit</h3>
+      <p>EU-Taxonomie-Konformität, Stranded-Asset-Risiko, ÖGNI/DGNB-Zertifizierung, CRREM-Abgleich (Carbon-Reduction-Pfad). Refinanzierungs­fähigkeit über grüne Kredite.</p>
+      <ul>
+        <li>Taxonomy-aligned (DNSH)</li>
+        <li>CRREM-Pfad bis 2050</li>
+        <li>ÖGNI Gold/Platin als Aufpreis</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="kpi">
+  <h2><span class="num">§ 03 / Kennzahlen</span>KPI-Matrix für die Investitions­entscheidung</h2>
+  <div class="intro">
+    <p>Eine Investition steht oder fällt mit einer Hand voll Kennzahlen. Die folgende Matrix listet die Standard-KPIs mit Definition, Formel und branchen­üblicher Schwelle. Für Bauträger gilt zusätzlich der <em>Trading-Profit</em>; für Bestands­halter sind <em>IRR</em> und <em>Cap Rate</em> dominant.</p>
+  </div>
+
+  <div class="kpi-table">
+    <table>
+      <thead>
+        <tr>
+          <th>KPI</th>
+          <th>Formel</th>
+          <th>Branchen­schwelle</th>
+          <th>Quelle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Bruttomiet­rendite</td>
+          <td><span class="formula">Jahres­miete / Kaufpreis</span></td>
+          <td><span class="threshold">Wien Wohnbau ≥ 3,0 %</span></td>
+          <td><a href="https://immoprentice.de/immobilien-kennzahlen/" target="_blank" rel="noopener">Immoprentice</a></td>
+        </tr>
+        <tr>
+          <td>Nettomiet­rendite</td>
+          <td><span class="formula">(Jahres­miete − nU-Kosten) / Gesamt­invest</span></td>
+          <td><span class="threshold">≥ 2,5 %</span></td>
+          <td><a href="https://immoprentice.de/immobilien-kennzahlen/" target="_blank" rel="noopener">Immoprentice</a></td>
+        </tr>
+        <tr>
+          <td>IRR</td>
+          <td><span class="formula">∑ CF<sub>t</sub> / (1+r)<sup>t</sup> = 0</span></td>
+          <td><span class="threshold">≥ 5–7 % EK-IRR</span></td>
+          <td><a href="https://repositum.tuwien.at/bitstream/20.500.12708/20012/1/Stattmann%20Johannes%20-%202022%20-%20Das%20DCF-Verfahren%20in%20der%20Immobilien-%20und%20der...pdf" target="_blank" rel="noopener">TU Wien (Stattmann 2022)</a></td>
+        </tr>
+        <tr>
+          <td>NPV</td>
+          <td><span class="formula">∑ CF<sub>t</sub> / (1+WACC)<sup>t</sup> − I<sub>0</sub></span></td>
+          <td><span class="threshold">&gt; 0</span></td>
+          <td><a href="https://www.heid-immobilienbewertung.de/ratgeber/dcf-methode-immobilien/" target="_blank" rel="noopener">Heid</a></td>
+        </tr>
+        <tr>
+          <td>DSCR</td>
+          <td><span class="formula">NOI / Kapitaldienst</span></td>
+          <td><span class="threshold">≥ 1,2 (Bank-Standard)</span></td>
+          <td>Bankenpraxis</td>
+        </tr>
+        <tr>
+          <td>LTV / LTC</td>
+          <td><span class="formula">FK / Verkehrswert · FK / Gesamt­kosten</span></td>
+          <td><span class="threshold">LTV 60–70 %</span></td>
+          <td>Bankenpraxis</td>
+        </tr>
+        <tr>
+          <td>Cap Rate</td>
+          <td><span class="formula">NOI / Markt­wert</span></td>
+          <td><span class="threshold">Wien Wohnbau 3,5–4,5 %</span></td>
+          <td><a href="https://www.gif-ev.de" target="_blank" rel="noopener">gif e.V.</a></td>
+        </tr>
+        <tr>
+          <td>Trading-Profit (Bauträger)</td>
+          <td><span class="formula">(Verkaufs­erlös − Gesamt­kosten) / Gesamt­kosten</span></td>
+          <td><span class="threshold">≥ 15–20 %</span></td>
+          <td>Branchen­standard</td>
+        </tr>
+        <tr>
+          <td>Equity Multiple</td>
+          <td><span class="formula">∑ Aus­schüttungen / EK-Einlage</span></td>
+          <td><span class="threshold">≥ 1,5× über Halte­dauer</span></td>
+          <td>PERE-Praxis</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="dcf">
+  <h2><span class="num">§ 04 / Standard</span>DCF nach ÖNORM B 1802-2</h2>
+  <div class="intro">
+    <p>Die <strong>ÖNORM B 1802-2</strong> kodifiziert das Discounted-Cashflow-Verfahren für die Liegenschafts­bewertung in Österreich. Es ist zweistufig: eine Detail­prognose­phase mit konkreten jahres­scharfen Cashflows, gefolgt von einer Restwert­phase mit kapitalisiertem ewigen Cashflow. Anders als die direkte Kapitalisierung (Ertragswert nach ÖNORM B 1802-1) erlaubt das DCF-Verfahren explizit modellierte Phasen­übergänge — etwa eine Sanierung in Jahr 5 oder einen Mieterwechsel in Jahr 7.</p>
+  </div>
+
+  <div class="dcf-grid">
+    <div class="dcf-phase">
+      <h4>Phase 1</h4>
+      <h3>Detail­prognose · 10 Jahre</h3>
+      <p>Jahres­scharfe Cashflows: Mieteinnahmen, nicht umlegbare Bewirtschaftungs­kosten, Leerstands­annahme, Instandhaltung, Capex. Diskontiert mit dem <em>Diskontierungs­zinssatz</em> (Eigenkapital­kosten + risikofreier Zins + Risikoaufschlag).</p>
+      <div class="dcf-formula">PV<sub>1</sub> = Σ<sub>t=1..10</sub> CF<sub>t</sub> / (1 + r)<sup>t</sup></div>
+    </div>
+    <div class="dcf-phase">
+      <h4>Phase 2</h4>
+      <h3>Restwert · ab Jahr 11</h3>
+      <p>Kapitalisierter Restwert mit dem <em>Liegenschafts­zinssatz</em> (Cap Rate). Diskontiert auf Stichtag heute. Restwert ≠ ewig: nach 30–50 Jahren Substanz­abschlag oder modellierter Verkauf zum Cap-Rate-Multiple.</p>
+      <div class="dcf-formula">PV<sub>2</sub> = (CF<sub>11</sub> / cap) / (1 + r)<sup>10</sup></div>
+    </div>
+  </div>
+
+  <p style="margin-top: 32px; font-size: 14px; color: var(--ink-2); max-width: var(--col);">
+    Verkehrswert = PV<sub>1</sub> + PV<sub>2</sub>. Ausführliche Herleitung und Praxis­beispiele in der TU-Wien-Arbeit von <a href="https://repositum.tuwien.at/bitstream/20.500.12708/20012/1/Stattmann%20Johannes%20-%202022%20-%20Das%20DCF-Verfahren%20in%20der%20Immobilien-%20und%20der...pdf" target="_blank" rel="noopener">Stattmann (2022)</a> und im Ratgeber von <a href="https://www.heid-immobilienbewertung.de/ratgeber/dcf-methode-immobilien/" target="_blank" rel="noopener">Heid Immobilien­bewertung</a>.
+  </p>
+</section>
+
+<section id="rechner">
+  <h2><span class="num">§ 05 / Rechner</span>Quick-Check: IRR &amp; Cashflow live</h2>
+  <div class="intro">
+    <p>Vereinfachter Cashflow-Rechner für ein einzelnes Bestands­objekt. Eingaben links, Ergebnisse rechts in Echtzeit. <em>Ersetzt keine vollständige DCF-Bewertung</em> — dient der Plausibilisierung und schnellen Einschätzung im Pre-Pre-Development-Stadium.</p>
+  </div>
+
+  <div class="calc">
+    <h3>Cashflow- und Renditerechner</h3>
+    <div class="calc-sub">Default: Wiener Bestand 1,5 Mio €, 75.000 € Jahres­miete (5 % brutto), 35 % EK, 3,5 % Zins, 10 Jahre Halte­dauer. Bewusst grenz­wertige Werte — verschiebe die Slider, bis das Projekt tragfähig wird.</div>
+
+    <div class="calc-inputs">
+      <div class="field">
+        <label>Kaufpreis <span class="val" id="v-kp">1.500.000 €</span></label>
+        <input type="range" id="kp" min="200000" max="10000000" step="50000" value="1500000">
+      </div>
+      <div class="field">
+        <label>Erwerbsneben­kosten <span class="val" id="v-nk">9 %</span></label>
+        <input type="range" id="nk" min="0" max="15" step="0.5" value="9">
+      </div>
+      <div class="field">
+        <label>Jahres­nettomiete <span class="val" id="v-mi">75.000 €</span></label>
+        <input type="range" id="mi" min="5000" max="500000" step="1000" value="75000">
+      </div>
+      <div class="field">
+        <label>Nicht umlegbare Kosten <span class="val" id="v-nu">18 %</span></label>
+        <input type="range" id="nu" min="0" max="40" step="1" value="18">
+      </div>
+      <div class="field">
+        <label>Eigenkapital­quote <span class="val" id="v-ek">35 %</span></label>
+        <input type="range" id="ek" min="10" max="100" step="5" value="35">
+      </div>
+      <div class="field">
+        <label>Fremdkapital­zins <span class="val" id="v-zi">3,5 %</span></label>
+        <input type="range" id="zi" min="0" max="10" step="0.1" value="3.5">
+      </div>
+      <div class="field">
+        <label>Tilgung <span class="val" id="v-ti">2,0 %</span></label>
+        <input type="range" id="ti" min="0" max="6" step="0.25" value="2">
+      </div>
+      <div class="field">
+        <label>Halte­dauer <span class="val" id="v-hd">10 Jahre</span></label>
+        <input type="range" id="hd" min="3" max="30" step="1" value="10">
+      </div>
+      <div class="field">
+        <label>Mietsteigerung p.a. <span class="val" id="v-ms">2,0 %</span></label>
+        <input type="range" id="ms" min="0" max="6" step="0.25" value="2">
+      </div>
+      <div class="field">
+        <label>Wertsteigerung p.a. <span class="val" id="v-ws">1,5 %</span></label>
+        <input type="range" id="ws" min="-3" max="6" step="0.25" value="1.5">
+      </div>
+      <div class="field">
+        <label>Exit-Cap-Rate <span class="val" id="v-cr">4,0 %</span></label>
+        <input type="range" id="cr" min="2" max="10" step="0.1" value="4">
+      </div>
+    </div>
+
+    <div class="calc-outputs">
+      <div class="out-block">
+        <div class="label">Bruttomiet­rendite</div>
+        <div class="value" id="o-bmr">3,00 %</div>
+      </div>
+      <div class="out-block">
+        <div class="label">Nettomiet­rendite</div>
+        <div class="value" id="o-nmr">2,20 %</div>
+      </div>
+      <div class="out-block">
+        <div class="label">Cashflow Jahr 1 (vor Steuer)</div>
+        <div class="value" id="o-cf1">−14.300 €</div>
+      </div>
+      <div class="out-block">
+        <div class="label">DSCR Jahr 1</div>
+        <div class="value" id="o-dscr">0,83</div>
+      </div>
+      <div class="out-block">
+        <div class="label">LTV initial</div>
+        <div class="value" id="o-ltv">60 %</div>
+      </div>
+      <div class="out-block">
+        <div class="label">EK-IRR (vor Steuer)</div>
+        <div class="value" id="o-irr">5,2 %</div>
+      </div>
+      <div class="out-block">
+        <div class="label">Equity Multiple</div>
+        <div class="value" id="o-em">1,7×</div>
+      </div>
+      <div class="out-block">
+        <div class="label">NPV @ 5 % Diskont</div>
+        <div class="value" id="o-npv">125.000 €</div>
+      </div>
+    </div>
+
+    <div class="calc-chart">
+      <h4>Cashflow nach Jahr (vor Steuer, ohne Exit)</h4>
+      <div class="chart" id="chart"></div>
+    </div>
+  </div>
+</section>
+
+<section id="risiko">
+  <h2><span class="num">§ 06 / Risiko</span>Sensitivitäts­matrix</h2>
+  <div class="intro">
+    <p>Drei Schock-Szenarien gegen das obige Default-Beispiel. Ein Projekt sollte auch im Worst-Case einen positiven NPV oder zumindest keine EK-Vernichtung erleiden. Wer nur das Base-Szenario rechnet, rechnet falsch.</p>
+  </div>
+
+  <div class="kpi-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Szenario</th>
+          <th>Annahme</th>
+          <th>EK-IRR</th>
+          <th>NPV</th>
+          <th>Bewertung</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Base</td>
+          <td>Default-Eingaben</td>
+          <td><span class="threshold">~5–6 %</span></td>
+          <td>positiv</td>
+          <td>Investition tragfähig</td>
+        </tr>
+        <tr>
+          <td>Stress Zins</td>
+          <td>+200 bp Fremdkapital­zins</td>
+          <td>~2–3 %</td>
+          <td>nahe Null</td>
+          <td>Kritisch — Refi-Risiko</td>
+        </tr>
+        <tr>
+          <td>Stress Mieten</td>
+          <td>−15 % erzielbare Miete</td>
+          <td>~1 %</td>
+          <td>negativ</td>
+          <td>Knockout</td>
+        </tr>
+        <tr>
+          <td>Stress Bau</td>
+          <td>+20 % Bau- &amp; Sanierungs­kosten</td>
+          <td>~3 %</td>
+          <td>nahe Null</td>
+          <td>Reserve aufgebraucht</td>
+        </tr>
+        <tr>
+          <td>Worst-Case</td>
+          <td>Zins +200 bp · Miete −10 % · Bau +15 %</td>
+          <td>negativ</td>
+          <td>stark negativ</td>
+          <td>Projekt verwerfen</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="margin-top: 32px; font-size: 14px; color: var(--ink-2); max-width: var(--col);">
+    Praxis: Spielen Sie die obigen Szenarien im Rechner durch. Wenn der Worst-Case-IRR unter 0 % rutscht <em>und</em> die Reserve im Base-Case unter 5 % liegt, ist das Projekt zu fragil.
+  </p>
+</section>
+
+<section id="checkliste">
+  <h2><span class="num">§ 07 / Praxis</span>Predevelopment-Checkliste</h2>
+  <div class="intro">
+    <p>48 konkrete Prüfpunkte, gruppiert nach den neun Phasen. Status wird lokal im Browser gespeichert. Eine vollständig abgehakte Checkliste ist die Mindest­voraussetzung für eine fundierte Investitions­entscheidung — nicht ihre Garantie.</p>
+  </div>
+
+  <div class="checklist" id="checklist"></div>
+</section>
+
+<section id="quellen">
+  <h2><span class="num">§ 08 / Quellen</span>Kuratierte Ressourcen</h2>
+  <div class="intro">
+    <p>Quellen, die im Predevelopment Check unverzichtbar sind. Standards zuerst, dann analytische Tools, dann Wissensspeicher, dann Verbände und Statistik­ämter.</p>
+  </div>
+
+  <div class="resources">
+    <div class="res-group">
+      <h4>Standards &amp; Normen</h4>
+      <ul>
+        <li><strong><a href="https://shop.austrian-standards.at/action/de/public/details/717881/OENORM_B_1802-2_2014_03_01" target="_blank" rel="noopener">ÖNORM B 1802-2</a></strong><span>Liegenschafts­bewertung — DCF-Verfahren (zweiphasig)</span></li>
+        <li><strong><a href="https://shop.austrian-standards.at/action/de/public/details/657540/OENORM_B_1801-1_2015_12_01" target="_blank" rel="noopener">ÖNORM B 1801-1</a></strong><span>Bauwesen — Objekterrichtung — Kosten­gliederung</span></li>
+        <li><strong><a href="https://shop.austrian-standards.at/action/de/public/details/495497/OENORM_B_1801-2_2011_04_01" target="_blank" rel="noopener">ÖNORM B 1801-2</a></strong><span>Lebenszyklus­kosten</span></li>
+        <li><strong><a href="https://www.gif-ev.de" target="_blank" rel="noopener">gif e.V.</a></strong><span>Mietflächen-Definitionen MFG, Renditen, Marktreports</span></li>
+      </ul>
+    </div>
+
+    <div class="res-group">
+      <h4>Methoden &amp; Forschung</h4>
+      <ul>
+        <li><strong><a href="https://repositum.tuwien.at/bitstream/20.500.12708/20012/1/Stattmann%20Johannes%20-%202022%20-%20Das%20DCF-Verfahren%20in%20der%20Immobilien-%20und%20der...pdf" target="_blank" rel="noopener">TU Wien · Stattmann (2022)</a></strong><span>Diplomarbeit „DCF-Verfahren in der Immobilien­bewertung"</span></li>
+        <li><strong><a href="https://www.heid-immobilienbewertung.de/ratgeber/dcf-methode-immobilien/" target="_blank" rel="noopener">Heid · DCF-Ratgeber</a></strong><span>Praxis­beispiel mit Zahlen</span></li>
+        <li><strong><a href="https://www.built-smart-hub.com/post/lebenszykluskosten-wirtschaftlichkeitsberechnung-immobilienpraxis" target="_blank" rel="noopener">Built-Smart-Hub</a></strong><span>Lebenszykluskosten &amp; Wirtschaftlichkeit</span></li>
+        <li><strong><a href="https://www.wienerborse.at/wissen/analyse-strategie/einfuehrung-in-die-fundamentalanalyse/cash-flow-/kapitalflussrechnung/" target="_blank" rel="noopener">Wiener Börse Wissen</a></strong><span>Cashflow-Grundlagen</span></li>
+      </ul>
+    </div>
+
+    <div class="res-group">
+      <h4>Tools &amp; Praxisrechner</h4>
+      <ul>
+        <li><strong><a href="https://immobilienexcel.at/immobilien-rechner-excel/" target="_blank" rel="noopener">ImmobilienExcel.at</a></strong><span>AT-spezifischer Investment-Rechner mit 5 Kern-KPIs</span></li>
+        <li><strong><a href="https://immoprentice.de/immobilien-kennzahlen/" target="_blank" rel="noopener">Immoprentice</a></strong><span>Die 7 wichtigsten Kennzahlen für Kapitalanleger</span></li>
+        <li><strong><a href="https://www.ev-digitalinvest.de/analyseprozess" target="_blank" rel="noopener">EV Digital Invest</a></strong><span>Kompletter institutioneller Analyseprozess</span></li>
+        <li><strong><a href="https://immozins.ch/wiki/projektentwicklung/" target="_blank" rel="noopener">ImmoZins Wiki</a></strong><span>Projektentwicklung Schritt für Schritt</span></li>
+      </ul>
+    </div>
+
+    <div class="res-group">
+      <h4>Verbände &amp; Daten</h4>
+      <ul>
+        <li><strong><a href="https://www.statistik.at/" target="_blank" rel="noopener">Statistik Austria</a></strong><span>Baupreisindex, Wohnungs­statistik, Demografie­prognose</span></li>
+        <li><strong><a href="https://www.ogni.at/" target="_blank" rel="noopener">ÖGNI</a></strong><span>Österr. Ges. f. Nachhaltige Immobilien­wirtschaft</span></li>
+        <li><strong><a href="https://www.voepe.at/" target="_blank" rel="noopener">VÖPE</a></strong><span>Vereinigung Österreichischer Projekt­entwickler</span></li>
+        <li><strong><a href="https://www.immobilientreuhaender.at/" target="_blank" rel="noopener">Fachverband Immobilien­treuhänder WKO</a></strong><span>Branchenstandards Österreich</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-mark">PREDEV</div>
+    <p><strong>Predevelopment Check für Immobilien­projekte.</strong> Methodik, Kennzahlen und Standards für Bauträger und Investoren — strukturiert nach ÖNORM B 1802-2, mit kuratierten Quellen.</p>
+    <p>Diese Seite enthält keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen dienen der Methoden­demonstration und ersetzen keine professionelle Bewertung. Berechnete IRRs und Cashflows beruhen auf vereinfachten Modellen — die ÖNORM-konforme Bewertung erfordert detaillierte Annahmen über Bewirtschaftungs­kosten, Leerstand, Indexierung und Marktentwicklung.</p>
+    <div class="foot-meta">
+      <div>© 2026 PREDEV · Wien</div>
+      <div>Workshop-Output AI Computer Use · 2026-05-06</div>
+      <div>Stand · 2026-05-06</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ───────── Checkliste ─────────
+const checkData = [
+  { title: "Standort", items: [
+    "Bezirk + Adresse mit Walk-Score und ÖV-Anbindung dokumentiert",
+    "Demografische Prognose 10 Jahre für Catchment Area",
+    "Lärm- und Emissions­karten geprüft",
+    "Geplante Infrastruktur (ÖV, Schule, Spital) recherchiert",
+    "Konkurrenz-Pipeline im Umkreis 1 km dokumentiert"
+  ]},
+  { title: "Markt", items: [
+    "Vergleichsmieten letzte 12 Monate aus min. 3 Quellen",
+    "Vergleichsverkaufs­preise letzte 12 Monate",
+    "Leerstandsquote im Mikromarkt < 4 %",
+    "Absorptions­geschwindigkeit (Monate bis 90 % verkauft) plausibel",
+    "Mietsteigerungs­trend versus VPI dokumentiert"
+  ]},
+  { title: "Technik & Recht", items: [
+    "Flächen­widmung passt zur geplanten Nutzung",
+    "Bebauungsplan/Baurecht geprüft, Bebauungs­dichte verifiziert",
+    "Bestands­denkmal/Ensembleschutz geklärt",
+    "Boden­gutachten oder Indikator (Altlasten­verdachts­fläche)",
+    "Hochwasser- und Naturgefahren­zone geprüft",
+    "Anschluss Wasser/Strom/Glasfaser bestätigt"
+  ]},
+  { title: "Kosten", items: [
+    "Grunderwerb mit GrESt 3,5 %, Eintragung 1,1 %, Notar/Vertrag",
+    "Baukosten nach ÖNORM B 1801-1 KG 1-9",
+    "Reserve ≥ 7 % auf Bau",
+    "Finanzierungs­kosten inkl. Bauzeit­zinsen",
+    "Vermarktungs- und Erst­vermietungs­kosten budgetiert"
+  ]},
+  { title: "Erlöse", items: [
+    "Achievable Rent (nicht Asking Rent) angesetzt",
+    "Lease-up-Kurve in Monaten begründet",
+    "Indexierungs­annahme VPI/HVPI dokumentiert",
+    "Exit-Cap-Rate aus Marktdaten abgeleitet, nicht erhofft",
+    "Vermarktungs­dauer ≥ branchen­üblich (12-24 Monate)"
+  ]},
+  { title: "Wirtschaftlichkeit", items: [
+    "DCF nach ÖNORM B 1802-2: Phase 1 (10 Jahre) + Phase 2",
+    "WACC dokumentiert und marktnah hergeleitet",
+    "EK-IRR ≥ Mindest­verzinsung der Investoren",
+    "NPV bei Diskontsatz X positiv",
+    "DSCR Jahr 1 ≥ 1,2",
+    "LTV ≤ 70 %, LTC ≤ 80 %",
+    "Trading-Profit ≥ 15 % (für Bauträger)"
+  ]},
+  { title: "Risiko", items: [
+    "Sensitivitäten ±10 % auf Mieten gerechnet",
+    "Zins-Stresstest +200 bp",
+    "Bau­kosten-Stresstest +15-20 %",
+    "Worst-Case-Szenario kombiniert (Zins + Miete + Bau)",
+    "Reserve im Base-Case ≥ 7 % der Gesamt­investition"
+  ]},
+  { title: "Lebenszyklus", items: [
+    "Energie­ausweis-Zielwert definiert",
+    "U-Werte und Heiz­konzept abgestimmt",
+    "Instandhaltungs­quote 1,2-1,8 % p.a. eingeplant",
+    "Erneuerungs­zyklen Komponenten dokumentiert",
+    "Rückbau / End-of-Life-Kosten skizziert"
+  ]},
+  { title: "ESG", items: [
+    "EU-Taxonomie-Konformität (DNSH) geprüft",
+    "CRREM-Carbon-Reduction-Pfad bis 2050 abgeglichen",
+    "ÖGNI/DGNB/LEED-Zertifizierungs­strategie definiert",
+    "Refinanzierungs­fähigkeit über grüne Kredite geprüft",
+    "Stranded-Asset-Risiko 2030/2040 bewertet"
+  ]}
+];
+
+const STORAGE_KEY = "predev-check-state-v1";
+let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+
+const cl = document.getElementById("checklist");
+checkData.forEach((group, gi) => {
+  const div = document.createElement("div");
+  div.className = "check-group";
+  div.innerHTML = `<h4>${gi + 1 < 10 ? "0" + (gi + 1) : (gi + 1)} · ${group.title}</h4>`;
+  group.items.forEach((it, ii) => {
+    const id = `c-${gi}-${ii}`;
+    const checked = state[id] === true;
+    const item = document.createElement("div");
+    item.className = "check-item" + (checked ? " done" : "");
+    item.innerHTML = `<input type="checkbox" id="${id}" ${checked ? "checked" : ""}><label for="${id}">${it}</label>`;
+    item.addEventListener("click", (e) => {
+      if (e.target.tagName !== "INPUT") return;
+      state[id] = e.target.checked;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      item.classList.toggle("done", e.target.checked);
+    });
+    div.appendChild(item);
+  });
+  cl.appendChild(div);
+});
+
+// ───────── Rechner ─────────
+const fmtEur = (n) => new Intl.NumberFormat("de-AT", { maximumFractionDigits: 0 }).format(Math.round(n)) + " €";
+const fmtPct = (n) => (n * 100).toFixed(2).replace(".", ",") + " %";
+const fmtPct1 = (n) => (n * 100).toFixed(1).replace(".", ",") + " %";
+
+function calcIRR(cashflows, guess = 0.05) {
+  const npv = (rate) => cashflows.reduce((s, cf, t) => s + cf / Math.pow(1 + rate, t), 0);
+  let lo = -0.99, hi = 1.0;
+  if (npv(lo) * npv(hi) > 0) return null;
+  for (let i = 0; i < 100; i++) {
+    const mid = (lo + hi) / 2;
+    const v = npv(mid);
+    if (Math.abs(v) < 1e-3) return mid;
+    if (npv(lo) * v < 0) hi = mid; else lo = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+// Anfangsannuität bei Anfangstilgung "ti" und Zins "zi": (zi + ti) * P
+function initialAnnuity(P, zi, ti) {
+  return P * (zi + ti);
+}
+
+function update() {
+  const kp = +document.getElementById("kp").value;
+  const nk = +document.getElementById("nk").value / 100;
+  const mi = +document.getElementById("mi").value;
+  const nu = +document.getElementById("nu").value / 100;
+  const ek = +document.getElementById("ek").value / 100;
+  const zi = +document.getElementById("zi").value / 100;
+  const ti = +document.getElementById("ti").value / 100;
+  const hd = +document.getElementById("hd").value;
+  const ms = +document.getElementById("ms").value / 100;
+  const ws = +document.getElementById("ws").value / 100;
+  const cr = +document.getElementById("cr").value / 100;
+
+  document.getElementById("v-kp").textContent = fmtEur(kp);
+  document.getElementById("v-nk").textContent = (nk * 100).toFixed(1).replace(".", ",") + " %";
+  document.getElementById("v-mi").textContent = fmtEur(mi);
+  document.getElementById("v-nu").textContent = (nu * 100).toFixed(0) + " %";
+  document.getElementById("v-ek").textContent = (ek * 100).toFixed(0) + " %";
+  document.getElementById("v-zi").textContent = (zi * 100).toFixed(1).replace(".", ",") + " %";
+  document.getElementById("v-ti").textContent = (ti * 100).toFixed(2).replace(".", ",") + " %";
+  document.getElementById("v-hd").textContent = hd + " Jahre";
+  document.getElementById("v-ms").textContent = (ms * 100).toFixed(2).replace(".", ",") + " %";
+  document.getElementById("v-ws").textContent = (ws * 100).toFixed(2).replace(".", ",") + " %";
+  document.getElementById("v-cr").textContent = (cr * 100).toFixed(1).replace(".", ",") + " %";
+
+  const gesamt = kp * (1 + nk);
+  const ekAbs = gesamt * ek;
+  const fk = gesamt - ekAbs;
+  const noi0 = mi * (1 - nu);
+
+  const bmr = mi / kp;
+  const nmr = noi0 / gesamt;
+
+  const annuity = initialAnnuity(fk, zi, ti);
+  const debtService = annuity;
+  const cf1 = noi0 - debtService;
+  const dscr = noi0 / Math.max(debtService, 1);
+  const ltv = fk / kp;
+
+  // Cashflows über Haltedauer
+  const cashflows = [-ekAbs];
+  let fkRest = fk;
+  const yearly = [];
+  for (let t = 1; t <= hd; t++) {
+    const noiT = noi0 * Math.pow(1 + ms, t - 1);
+    const intT = fkRest * zi;
+    const annT = annuity;
+    const prinT = Math.min(annT - intT, fkRest);
+    fkRest -= prinT;
+    const cfT = noiT - annT;
+    cashflows.push(cfT);
+    yearly.push(cfT);
+  }
+  // Exit
+  const noiExit = noi0 * Math.pow(1 + ms, hd);
+  const wertExit = (noiExit / cr);
+  const netExit = wertExit - fkRest;
+  cashflows[cashflows.length - 1] += netExit;
+
+  const irr = calcIRR(cashflows);
+  const npvDiscount = 0.05;
+  const npv = cashflows.reduce((s, cf, t) => s + cf / Math.pow(1 + npvDiscount, t), 0);
+  const totalDistrib = cashflows.slice(1).reduce((s, cf) => s + Math.max(0, cf), 0) + Math.max(0, netExit);
+  const allDistrib = cashflows.slice(1).reduce((s, cf) => s + cf, 0);
+  const equityMultiple = (allDistrib + ekAbs) / ekAbs;
+
+  document.getElementById("o-bmr").textContent = fmtPct(bmr);
+  document.getElementById("o-nmr").textContent = fmtPct(nmr);
+
+  const cf1El = document.getElementById("o-cf1");
+  cf1El.textContent = fmtEur(cf1);
+  cf1El.className = "value " + (cf1 >= 0 ? "good" : cf1 > -10000 ? "warn" : "bad");
+
+  const dscrEl = document.getElementById("o-dscr");
+  dscrEl.textContent = dscr.toFixed(2).replace(".", ",");
+  dscrEl.className = "value " + (dscr >= 1.2 ? "good" : dscr >= 1.0 ? "warn" : "bad");
+
+  const ltvEl = document.getElementById("o-ltv");
+  ltvEl.textContent = (ltv * 100).toFixed(0) + " %";
+  ltvEl.className = "value " + (ltv <= 0.7 ? "good" : ltv <= 0.8 ? "warn" : "bad");
+
+  const irrEl = document.getElementById("o-irr");
+  if (irr !== null) {
+    irrEl.textContent = fmtPct1(irr);
+    irrEl.className = "value " + (irr >= 0.05 ? "good" : irr >= 0.02 ? "warn" : "bad");
+  } else {
+    irrEl.textContent = "n/a";
+    irrEl.className = "value bad";
+  }
+
+  const emEl = document.getElementById("o-em");
+  emEl.textContent = equityMultiple.toFixed(2).replace(".", ",") + "×";
+  emEl.className = "value " + (equityMultiple >= 1.5 ? "good" : equityMultiple >= 1.0 ? "warn" : "bad");
+
+  const npvEl = document.getElementById("o-npv");
+  npvEl.textContent = fmtEur(npv);
+  npvEl.className = "value " + (npv >= 0 ? "good" : "bad");
+
+  // Chart
+  const chart = document.getElementById("chart");
+  chart.innerHTML = "";
+  const showYears = Math.min(hd, 10);
+  const slice = yearly.slice(0, showYears);
+  const maxAbs = Math.max(...slice.map(Math.abs), 1);
+  for (let i = 0; i < showYears; i++) {
+    const cf = slice[i];
+    const bar = document.createElement("div");
+    bar.className = "bar" + (cf < 0 ? " neg" : "");
+    bar.style.height = (Math.abs(cf) / maxAbs * 100) + "%";
+    bar.innerHTML = `<span class="yr">${i + 1}</span>`;
+    bar.title = `Jahr ${i + 1}: ${fmtEur(cf)}`;
+    chart.appendChild(bar);
+  }
+}
+
+document.querySelectorAll(".calc input[type=range]").forEach(el => el.addEventListener("input", update));
+update();
+</script>
+</body>
+</html>
