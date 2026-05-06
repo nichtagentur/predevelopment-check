@@ -500,6 +500,32 @@
     font-weight: 500;
   }
 
+  /* ───────── FIGURES ───────── */
+  .figure {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 48px 32px 8px;
+  }
+  .figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .figure figcaption {
+    font-family: var(--mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-2);
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule);
+    max-width: 60ch;
+  }
+  .figure-inline {
+    margin: 48px 0 8px;
+  }
+
   @media (max-width: 768px) {
     .hero { padding: 64px 24px 48px; }
     section { padding: 64px 24px; }
@@ -541,6 +567,11 @@
   </div>
 </div>
 
+<figure class="figure">
+  <img src="hero-zinshaus.jpg" alt="Klassische Wiener Gründerzeit-Fassade in der frühen Morgensonne" loading="eager">
+  <figcaption>Wiener Gründerzeit-Zinshaus · Bestand mit hoher Substanz und niedriger Brutto­rendite — das klassische Predevelopment-Spannungsfeld zwischen Substanzwert und Cashflow-Tragfähigkeit.</figcaption>
+</figure>
+
 <section id="intro">
   <h2><span class="num">§ 01 / Einführung</span>Was ein Predevelopment Check leistet</h2>
   <div class="intro">
@@ -560,6 +591,11 @@
   <div class="intro">
     <p>Ein vollständiger Predevelopment Check umfasst neun Disziplinen. Sie laufen iterativ — eine Aktualisierung der Markt­annahmen wirkt auf Erlös­prognose, IRR und Risiko­profil. Reihenfolge ist nicht streng linear, aber die ersten drei Phasen sind <em>Knockout-Tests</em>: scheitert ein Projekt hier, ist jede weitere Analyse Verschwendung.</p>
   </div>
+
+  <figure class="figure-inline">
+    <img src="construction-wien.jpg" alt="Aktive Wiener Baustelle mit Kran, Gerüst und Bauarbeitern in einer Außenbezirks-Straße">
+    <figcaption>Aktive Bauphase, Wiener Außen­bezirk · Alle neun Predevelopment-Phasen müssen <em>vor</em> diesem Punkt abgeschlossen sein — nach Spatenstich sind Korrekturen ein Vielfaches teurer.</figcaption>
+  </figure>
 
   <div class="phases">
     <div class="phase">
@@ -755,6 +791,11 @@
   <p style="margin-top: 32px; font-size: 14px; color: var(--ink-2); max-width: var(--col);">
     Verkehrswert = PV<sub>1</sub> + PV<sub>2</sub>. Ausführliche Herleitung und Praxis­beispiele in der TU-Wien-Arbeit von <a href="https://repositum.tuwien.at/bitstream/20.500.12708/20012/1/Stattmann%20Johannes%20-%202022%20-%20Das%20DCF-Verfahren%20in%20der%20Immobilien-%20und%20der...pdf" target="_blank" rel="noopener">Stattmann (2022)</a> und im Ratgeber von <a href="https://www.heid-immobilienbewertung.de/ratgeber/dcf-methode-immobilien/" target="_blank" rel="noopener">Heid Immobilien­bewertung</a>.
   </p>
+
+  <figure class="figure-inline">
+    <img src="rooftops-wien.jpg" alt="Wiener Dächerlandschaft im Abendlicht mit Stephansdom, Gründerzeit-Dächern und modernen Dachausbauten">
+    <figcaption>Wiener Dächerlandschaft, Innen­bezirke · Mischung aus Gründerzeit­bestand und modernen Dach­geschoss-Aufbauten — typische Asset-Allokation für Bestands­halter, mit Cap Rates zwischen 3,5 und 4,5 %.</figcaption>
+  </figure>
 </section>
 
 <section id="rechner">
